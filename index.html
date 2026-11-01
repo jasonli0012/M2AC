@@ -16,23 +16,23 @@
        line-height:1.65;font-size:17px}
   .wrap{max-width:900px;margin:0 auto;padding:0 24px}
 
-  header{background:linear-gradient(180deg,var(--navy) 0%,#12305e 100%);color:#fff;
-         padding:56px 0 44px;text-align:center}
-  header h1{font-size:1.9rem;line-height:1.35;margin:0 0 22px;font-weight:700;letter-spacing:.2px}
-  .authors{font-size:1.02rem;line-height:1.9;color:#e8f0fb}
-  .authors sup{color:#7fd8d3;font-size:.72em}
-  .affil{font-size:.85rem;color:#a9bdd8;margin-top:14px;line-height:1.7}
-  .affil sup{color:#7fd8d3}
-  .notes{font-size:.8rem;color:#8ba3c7;margin-top:10px}
-  .notes sup{color:#7fd8d3}
+  header{background:var(--bg);color:var(--ink);
+         padding:56px 0 44px;text-align:center;border-bottom:1px solid var(--line)}
+  header h1{font-size:1.9rem;line-height:1.35;margin:0 0 22px;font-weight:700;letter-spacing:.2px;color:var(--navy)}
+  .authors{font-size:1.02rem;line-height:1.9;color:var(--ink)}
+  .authors sup{color:var(--teal);font-size:.72em}
+  .affil{font-size:.85rem;color:var(--muted);margin-top:14px;line-height:1.7}
+  .affil sup{color:var(--teal)}
+  .notes{font-size:.8rem;color:var(--muted);margin-top:10px}
+  .notes sup{color:var(--teal)}
 
   .badges{margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   .badge{display:inline-block;padding:7px 18px;border-radius:999px;text-decoration:none;
-         font-size:.9rem;font-weight:600;border:1px solid rgba(255,255,255,.35);color:#fff;
+         font-size:.9rem;font-weight:600;border:1px solid var(--line);color:var(--navy);
          transition:all .15s ease}
-  .badge:hover{background:rgba(255,255,255,.12)}
-  .badge.solid{background:#64ffda;color:var(--navy);border-color:#64ffda}
-  .badge.solid:hover{background:#8affe4}
+  .badge:hover{background:var(--soft)}
+  .badge.solid{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .badge.solid:hover{background:#0d6a69}
   .badge .soon{font-weight:400;opacity:.75;font-size:.8rem;margin-left:4px}
 
   section{padding:44px 0 8px}
@@ -64,8 +64,11 @@
   table.stats tr.total td{background:var(--soft)}
 
   .dl-note{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 18px;border-radius:8px;
-           background:#fff7e0;border:1px solid #f0d98c;color:#8a6d1a;font-size:.9rem;font-weight:600}
-  .dl-note .dot{width:9px;height:9px;border-radius:50%;background:#e0a800;display:inline-block}
+           background:#fff7e0;border:1px solid #f0d98c;color:#8a6d1a;font-size:.9rem;font-weight:600;
+           text-decoration:none;transition:all .15s ease}
+  .dl-note:hover{background:#fdf1c7;border-color:#e6c860}
+  .dl-note b{font-weight:800}
+  .dl-note .dot{width:9px;height:9px;border-radius:50%;background:#2e9e44;display:inline-block}
 
   pre.bibtex{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:18px 20px;
              font-size:.82rem;line-height:1.6;overflow-x:auto;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
@@ -102,9 +105,8 @@
   <section id="video">
     <h2><span class="hash">#</span> Video</h2>
     <div class="video-box">
-      <!-- Placeholder clip; replace src with the real demo video later -->
       <video controls playsinline muted preload="metadata" poster="assets/video_poster.jpg">
-        <source src="assets/video_placeholder.mp4" type="video/mp4">
+        <source src="assets/M2AC.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
@@ -167,9 +169,11 @@
     </table>
     <p style="margin-top:16px">
       Field-trial logs (multi-USV rosbags) from the lake experiments — formation switching, unseen-lake transfer,
-      guidance and reuse, and narrow-passage traversal — will accompany the image dataset.
+      guidance and reuse, and narrow-passage traversal — are included in the download alongside the image dataset.
     </p>
-    <span class="dl-note"><span class="dot"></span>Download coming soon</span>
+    <a class="dl-note" href="https://pan.baidu.com/s/16j_rYS9jQJlKVoRFpHwkqg?pwd=my2c" target="_blank" rel="noopener">
+      <span class="dot"></span>Download from Baidu Netdisk&nbsp;(百度网盘)&nbsp;·&nbsp;access code / 提取码:&nbsp;<b>my2c</b>
+    </a>
   </section>
 
   <section id="citation">

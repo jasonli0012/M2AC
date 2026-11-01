@@ -1,6 +1,6 @@
 # M2AC Dataset
 
-This repository will host the dataset accompanying **"Language-Mediated Multimodal Reasoning for Agile Coordination of Uncrewed Surface Vehicle Swarms"**.
+This repository hosts the dataset accompanying **"Language-Mediated Multimodal Reasoning for Agile Coordination of Uncrewed Surface Vehicle Swarms"**.
 
 ## Water-surface scene dataset (~18k images)
 
@@ -23,5 +23,7 @@ Multi-USV rosbag logs from the real-world lake experiments, including formation 
 
 ## Download
 
-**Coming soon.** Download links (and per-sequence documentation) will be published here.
-If you need access earlier, please contact the authors.
+The water-surface scene dataset and the field-trial rosbag logs are available on Baidu Netdisk:
+
+- **Link:** <https://pan.baidu.com/s/16j_rYS9jQJlKVoRFpHwkqg?pwd=my2c>
+- **Access code (提取码):** `my2c`
