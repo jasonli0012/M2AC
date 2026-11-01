@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M2AC: Language-Mediated Multimodal Reasoning for Agile Coordination of Uncrewed Surface Vehicle Swarms</title>
+<meta name="description" content="Project page for M2AC — agile coordination of uncrewed surface vehicle swarms with language-mediated multimodal reasoning.">
+<style>
+  :root{
+    --navy:#0A192F; --ink:#1b2a41; --teal:#0e7c7b; --accent:#64b5f6;
+    --muted:#5a6b7d; --line:#dfe6ee; --bg:#ffffff; --soft:#f4f7fa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+       line-height:1.65;font-size:17px}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px}
+
+  header{background:linear-gradient(180deg,var(--navy) 0%,#12305e 100%);color:#fff;
+         padding:56px 0 44px;text-align:center}
+  header h1{font-size:1.9rem;line-height:1.35;margin:0 0 22px;font-weight:700;letter-spacing:.2px}
+  .authors{font-size:1.02rem;line-height:1.9;color:#e8f0fb}
+  .authors sup{color:#7fd8d3;font-size:.72em}
+  .affil{font-size:.85rem;color:#a9bdd8;margin-top:14px;line-height:1.7}
+  .affil sup{color:#7fd8d3}
+  .notes{font-size:.8rem;color:#8ba3c7;margin-top:10px}
+  .notes sup{color:#7fd8d3}
+
+  .badges{margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .badge{display:inline-block;padding:7px 18px;border-radius:999px;text-decoration:none;
+         font-size:.9rem;font-weight:600;border:1px solid rgba(255,255,255,.35);color:#fff;
+         transition:all .15s ease}
+  .badge:hover{background:rgba(255,255,255,.12)}
+  .badge.solid{background:#64ffda;color:var(--navy);border-color:#64ffda}
+  .badge.solid:hover{background:#8affe4}
+  .badge .soon{font-weight:400;opacity:.75;font-size:.8rem;margin-left:4px}
+
+  section{padding:44px 0 8px}
+  h2{font-size:1.35rem;color:var(--navy);margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+  h2 .hash{color:var(--teal)}
+
+  .video-box{background:#000;border-radius:10px;overflow:hidden;box-shadow:0 8px 28px rgba(10,25,47,.18)}
+  video{display:block;width:100%;height:auto}
+
+  .teaser{font-size:1.02rem}
+  ul.highlights{margin:16px 0 0;padding-left:0;list-style:none}
+  ul.highlights li{position:relative;padding-left:26px;margin:9px 0}
+  ul.highlights li::before{content:"▸";position:absolute;left:6px;color:var(--teal);font-weight:700}
+  .kpi{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px}
+  .kpi .card{flex:1 1 180px;background:var(--soft);border:1px solid var(--line);border-radius:10px;
+             padding:16px 18px;text-align:center}
+  .kpi .num{font-size:1.7rem;font-weight:800;color:var(--teal);display:block;line-height:1.2}
+  .kpi .lab{font-size:.82rem;color:var(--muted)}
+
+  .fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;align-items:start}
+  figure{margin:0;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:14px}
+  figure img{width:100%;height:auto;border-radius:6px;display:block}
+  figcaption{font-size:.88rem;color:var(--muted);margin-top:12px;line-height:1.6;text-align:left}
+
+  table.stats{border-collapse:collapse;width:100%;font-size:.92rem;margin-top:6px}
+  table.stats th,table.stats td{border:1px solid var(--line);padding:8px 12px;text-align:center}
+  table.stats th{background:var(--soft);color:var(--navy)}
+  table.stats td:first-child,table.stats tr.total td{font-weight:600}
+  table.stats tr.total td{background:var(--soft)}
+
+  .dl-note{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 18px;border-radius:8px;
+           background:#fff7e0;border:1px solid #f0d98c;color:#8a6d1a;font-size:.9rem;font-weight:600}
+  .dl-note .dot{width:9px;height:9px;border-radius:50%;background:#e0a800;display:inline-block}
+
+  pre.bibtex{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:18px 20px;
+             font-size:.82rem;line-height:1.6;overflow-x:auto;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+  pre.bibtex code{background:none;border:none}
+
+  footer{margin-top:56px;padding:26px 0 34px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:center}
+  @media (max-width:640px){header h1{font-size:1.45rem} body{font-size:16px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Language-Mediated Multimodal Reasoning for Agile Coordination of<br>Uncrewed Surface Vehicle Swarms</h1>
+    <div class="authors">
+      Bin-Bin Hu<sup>†1</sup>,&nbsp; Jialuo Li<sup>†1</sup>,&nbsp; Yifan Hu<sup>†1</sup>,&nbsp; Bin Liu<sup>2</sup>,&nbsp; Zhiquan Li<sup>1</sup>,&nbsp; Weiming Jiang<sup>1</sup>,&nbsp; Ran Shi<sup>1</sup>,&nbsp; Jiayu Zhou<sup>1</sup>,&nbsp; Bowen Yuan<sup>1</sup>,&nbsp; Rui Wang<sup>1</sup>,&nbsp; Yuang Zhou<sup>1</sup>,&nbsp; Dongyi Dai<sup>1</sup>,&nbsp; Wenjun Huang<sup>1</sup>,&nbsp; Yunfei Zhang<sup>3</sup>,&nbsp; Fei Gao<sup>*4</sup>,&nbsp; Hai-Tao Zhang<sup>*1</sup>
+    </div>
+    <div class="affil">
+      <sup>1</sup>School of Artificial Intelligence and Automation, MOE Engineering Research Center of Autonomous Intelligent Unmanned Systems, Huazhong University of Science and Technology<br>
+      <sup>2</sup>Dongguan University of Technology &nbsp;&nbsp; <sup>3</sup>Yunzhou Intelligence Technology Company Ltd. &nbsp;&nbsp; <sup>4</sup>State Key Laboratory of Industrial Control and Technology, Zhejiang University
+    </div>
+    <div class="notes"><sup>†</sup> Equal contribution &nbsp;&nbsp; <sup>*</sup> Corresponding author</div>
+    <div class="badges">
+      <!-- TODO: replace with real links when available, e.g. arXiv / paper PDF / code -->
+      <a class="badge solid" href="#dataset">Dataset</a>
+      <a class="badge" href="#">Paper <span class="soon">coming soon</span></a>
+      <a class="badge" href="#">arXiv <span class="soon">coming soon</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="video">
+    <h2><span class="hash">#</span> Video</h2>
+    <div class="video-box">
+      <!-- Placeholder clip; replace src with the real demo video later -->
+      <video controls playsinline muted preload="metadata" poster="assets/video_poster.jpg">
+        <source src="assets/video_placeholder.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
+
+  <section id="overview">
+    <h2><span class="hash">#</span> Overview</h2>
+    <p class="teaser">
+      M2AC is a language-mediated approach for coordinating swarms of uncrewed surface vehicles (USVs).
+      It lets a USV fleet follow high-level mission instructions, adapt its formation to open-water scenes,
+      and stay steerable by human operators through plain language. Extensive field trials on real lakes
+      with up to <b>seven heterogeneous USVs</b> demonstrate agile, reliable swarm coordination in the open world.
+    </p>
+    <ul class="highlights">
+      <li>Real-world lake experiments with up to seven heterogeneous USVs</li>
+      <li>Reactive formation switching when encountering unexpected obstacles</li>
+      <li>Zero-shot field demonstration in a previously unseen lake</li>
+      <li>In-mission recovery from perceptual failure through brief human guidance, with the correction reused later</li>
+      <li>Coordinated traversal of narrow passages</li>
+    </ul>
+    <div class="kpi">
+      <div class="card"><span class="num">7</span><span class="lab">heterogeneous USVs in field trials</span></div>
+      <div class="card"><span class="num">78.2%</span><span class="lab">formation-decision success rate (best)</span></div>
+      <div class="card"><span class="num">75.3%</span><span class="lab">F1 score (best)</span></div>
+    </div>
+  </section>
+
+  <section id="results">
+    <h2><span class="hash">#</span> Results</h2>
+    <div class="fig-grid">
+      <figure>
+        <img src="assets/results_comparison.png" alt="Formation and decision performance of M2AC versus baselines">
+        <figcaption><b>Formation and decision performance.</b> (A) Representative formation transitions of the evaluated methods. (B) Success and failure rates. (C) Precision, recall, and F1 score. (D) Success rates across formation types.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/human_guidance.jpg" alt="Field performance of M2AC before, during, and after human guidance">
+        <figcaption><b>Field performance before, during, and after human guidance.</b> (A) Snapshots at the three stages. (B) Corresponding trajectories: collision without guidance, collision-free passage after guidance, and larger obstacle clearance once the correction is reused.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="dataset">
+    <h2><span class="hash">#</span> Dataset</h2>
+    <p>
+      We release a self-built water-surface scene dataset of around <b>18k images</b> spanning four scene
+      categories. Training images were collected at Songshan Lake, while test images come from diverse
+      open-source water-surface scenes (rivers, streams, harbors) to probe generalization beyond the training lake.
+    </p>
+    <table class="stats">
+      <thead>
+        <tr><th>Scene category</th><th>Train</th><th>Test</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Open waters</td><td>5,052</td><td>430</td></tr>
+        <tr><td>Open target</td><td>3,552</td><td>344</td></tr>
+        <tr><td>Constrained passage</td><td>4,706</td><td>405</td></tr>
+        <tr><td>Constrained target</td><td>3,499</td><td>377</td></tr>
+        <tr class="total"><td>Total</td><td>16,809</td><td>1,556</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:16px">
+      Field-trial logs (multi-USV rosbags) from the lake experiments — formation switching, unseen-lake transfer,
+      guidance and reuse, and narrow-passage traversal — will accompany the image dataset.
+    </p>
+    <span class="dl-note"><span class="dot"></span>Download coming soon</span>
+  </section>
+
+  <section id="citation">
+    <h2><span class="hash">#</span> Citation</h2>
+    <p>If you find our work useful, please cite:</p>
+    <pre class="bibtex"><code>@article{m2ac2026,
+  title   = {Language-Mediated Multimodal Reasoning for Agile Coordination
+             of Uncrewed Surface Vehicle Swarms},
+  author  = {Hu, Bin-Bin and Li, Jialuo and Hu, Yifan and Liu, Bin and
+             Li, Zhiquan and Jiang, Weiming and Shi, Ran and Zhou, Jiayu and
+             Yuan, Bowen and Wang, Rui and Zhou, Yuang and Dai, Dongyi and
+             Huang, Wenjun and Zhang, Yunfei and Gao, Fei and Zhang, Hai-Tao},
+  year    = {2026},
+  note    = {Preprint}
+}</code></pre>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">© 2026 M2AC Team · School of Artificial Intelligence and Automation, HUST</div>
+</footer>
+
+</body>
+</html>
