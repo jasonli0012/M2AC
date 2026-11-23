@@ -4,87 +4,356 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>M2AC: Language-Mediated Multimodal Reasoning for Agile Coordination of Uncrewed Surface Vehicle Swarms</title>
-<meta name="description" content="Project page for M2AC — agile coordination of uncrewed surface vehicle swarms with language-mediated multimodal reasoning.">
+<meta name="description" content="M2AC is a language-mediated framework for agile coordination of uncrewed surface vehicle (USV) swarms, validated in field trials with up to seven heterogeneous USVs: reactive formation switching, zero-shot transfer to an unseen lake, human-guided correction with reuse, and narrow-passage traversal.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="M2AC: Language-Mediated Multimodal Reasoning for Agile Coordination of Uncrewed Surface Vehicle Swarms">
+<meta property="og:description" content="Language-mediated swarm autonomy for USV fleets, field-validated on real lakes.">
+<meta property="og:url" content="https://jasonli0012.github.io/M2AC/">
+<meta property="og:image" content="https://jasonli0012.github.io/M2AC/assets/video_poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%230e7c7b'/%3E%3Cpath d='M10.5 26V14.5l6 8 6-8V26' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M25 23.5c1.7-2 3.4-2 5.1 0s3.4 2 5.1 0' fill='none' stroke='%23a6e5e1' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   :root{
-    --navy:#0A192F; --ink:#1b2a41; --teal:#0e7c7b; --accent:#64b5f6;
-    --muted:#5a6b7d; --line:#dfe6ee; --bg:#ffffff; --soft:#f4f7fa;
+    --navy:#0A192F; --ink:#1b2a41; --body:#33475b; --teal:#0e7c7b; --teal-dark:#0b6665;
+    --teal-soft:#e3f2f1; --teal-line:#c9e4e2; --muted:#5a6b7d; --line:#dfe6ee; --soft:#f4f7fa;
+    --track:#e8eef4; --c-before:#d6336c; --c-during:#d9900a; --c-after:#2f9e44;
+    --r:16px;
+    --sh-sm:0 1px 2px rgba(10,25,47,.06),0 2px 10px rgba(10,25,47,.05);
+    --sh-md:0 10px 30px rgba(10,25,47,.12);
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-       line-height:1.65;font-size:17px}
-  .wrap{max-width:900px;margin:0 auto;padding:0 24px}
+  html{scroll-behavior:smooth;scroll-padding-top:68px;-webkit-text-size-adjust:100%}
+  body{margin:0;background:#fff;color:var(--ink);font-family:var(--font);line-height:1.7;font-size:17px;
+       -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  .narrow{max-width:880px}
+  a{color:var(--teal)}
+  :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--navy);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-size:.9rem;transition:top .2s}
+  .skip:focus{top:12px}
 
-  header{background:var(--bg);color:var(--ink);
-         padding:56px 0 44px;text-align:center;border-bottom:1px solid var(--line)}
-  header h1{font-size:1.9rem;line-height:1.35;margin:0 0 22px;font-weight:700;letter-spacing:.2px;color:var(--navy)}
-  .authors{font-size:1.02rem;line-height:1.9;color:var(--ink)}
-  .authors sup{color:var(--teal);font-size:.72em}
-  .affil{font-size:.85rem;color:var(--muted);margin-top:14px;line-height:1.7}
-  .affil sup{color:var(--teal)}
-  .notes{font-size:.8rem;color:var(--muted);margin-top:10px}
-  .notes sup{color:var(--teal)}
+  /* ---------- top navigation ---------- */
+  .topnav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);
+          -webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px);
+          border-bottom:1px solid var(--line)}
+  .nav-inner{max-width:1040px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;gap:14px}
+  .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;color:var(--navy);text-decoration:none;
+         font-size:1.08rem;letter-spacing:.2px;flex:none}
+  .brand svg{width:30px;height:30px;display:block}
+  .nav-links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{font-size:.9rem;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 11px;border-radius:999px;
+               transition:color .15s,background-color .15s}
+  .nav-links a:hover{color:var(--navy);background:var(--soft)}
+  .nav-links a.active{color:var(--teal-dark);background:var(--teal-soft)}
+  .nav-cta{flex:none;display:inline-flex;align-items:center;gap:6px;font-size:.86rem;font-weight:700;color:var(--teal-dark);
+           text-decoration:none;border:1px solid var(--teal-line);background:#fff;padding:6px 14px;border-radius:999px;transition:all .15s}
+  .nav-cta:hover{background:var(--teal-soft);transform:translateY(-1px)}
+  .nav-cta svg{width:13px;height:13px}
 
-  .badges{margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .badge{display:inline-block;padding:7px 18px;border-radius:999px;text-decoration:none;
-         font-size:.9rem;font-weight:600;border:1px solid var(--line);color:var(--navy);
-         transition:all .15s ease}
-  .badge:hover{background:var(--soft)}
-  .badge.solid{background:var(--teal);color:#fff;border-color:var(--teal)}
-  .badge.solid:hover{background:#0d6a69}
-  .badge .soon{font-weight:400;opacity:.75;font-size:.8rem;margin-left:4px}
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:66px 0 0;text-align:center;overflow:hidden;background:#fff}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-size:.78rem;font-weight:800;letter-spacing:.13em;
+          text-transform:uppercase;color:var(--teal-dark);background:var(--teal-soft);padding:7px 15px;border-radius:999px;margin:0 0 24px}
+  .kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(14,124,123,.15)}
+  .hero h1{font-size:clamp(1.55rem,1rem + 2.4vw,2.65rem);line-height:1.2;margin:0 auto 14px;font-weight:800;color:var(--navy);
+           letter-spacing:-.015em;max-width:1020px;text-wrap:balance}
+  .subtitle{font-size:clamp(1rem,.95rem + .3vw,1.16rem);color:var(--muted);margin:0 0 30px}
+  .subtitle b{color:var(--teal-dark);font-weight:800}
+  .authors{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 7px;max-width:1000px;margin:0 auto}
+  .author{display:inline-flex;align-items:baseline;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:#fff;
+          box-shadow:var(--sh-sm);font-size:.93rem;font-weight:500;color:var(--ink);transition:transform .18s,box-shadow .18s,border-color .18s}
+  .author:hover{transform:translateY(-2px);border-color:#b7c8d6;box-shadow:var(--sh-md)}
+  .author sup{color:var(--teal);font-size:.68em;font-weight:800;margin-left:2px}
+  .affil{font-size:.88rem;color:var(--muted);margin:24px auto 0;line-height:1.75;max-width:920px}
+  .affil sup{color:var(--teal);font-weight:700}
+  .notes{font-size:.82rem;color:var(--muted);margin-top:10px}
+  .notes sup{color:var(--teal);font-weight:700}
+  .badges{margin-top:30px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:11px 22px;border-radius:999px;font-size:.95rem;font-weight:700;
+       text-decoration:none;border:1px solid var(--line);color:var(--navy);background:#fff;box-shadow:var(--sh-sm);
+       transition:transform .18s,box-shadow .18s,background-color .18s,border-color .18s;cursor:pointer;font-family:inherit}
+  .btn:hover{transform:translateY(-2px);box-shadow:var(--sh-md);border-color:#b7c8d6}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .btn.primary:hover{background:var(--teal-dark);border-color:var(--teal-dark)}
+  .btn.off{color:var(--muted);background:var(--soft);box-shadow:none;cursor:default}
+  .btn.off:hover{transform:none;box-shadow:none;border-color:var(--line)}
+  .btn.off svg{opacity:.55}
+  .btn small{font-weight:600;opacity:.72;font-size:.8rem}
+  .btn svg{width:17px;height:17px;flex:none}
+  .hero-wave{margin-top:44px;line-height:0}
+  .hero-wave svg{width:100%;height:64px;display:block}
 
-  section{padding:44px 0 8px}
-  h2{font-size:1.35rem;color:var(--navy);margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--line)}
-  h2 .hash{color:var(--teal)}
+  /* ---------- sections ---------- */
+  section{padding:76px 0 0}
+  section#video{padding-top:30px}
+  section#citation{padding-bottom:72px}
+  .sec-head{margin-bottom:26px}
+  .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+  h2{font-size:clamp(1.5rem,1.2rem + 1.1vw,2.1rem);line-height:1.22;color:var(--navy);margin:0;font-weight:800;letter-spacing:-.015em;text-wrap:balance}
+  .lead{font-size:clamp(1.02rem,.98rem + .25vw,1.13rem);color:var(--body);margin:14px 0 0;max-width:860px}
+  .lead b,.lead strong{color:var(--navy)}
+  .sub-head{margin:48px 0 18px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .sub-head h3{font-size:1.32rem;color:var(--navy);margin:0;font-weight:800}
+  .sub-head p{margin:0;color:var(--muted);font-size:.96rem}
 
-  .video-box{background:#000;border-radius:10px;overflow:hidden;box-shadow:0 8px 28px rgba(10,25,47,.18)}
-  video{display:block;width:100%;height:auto}
+  /* video */
+  .video-shell{border-radius:var(--r);overflow:hidden;background:#000;box-shadow:0 24px 60px -18px rgba(10,25,47,.35),0 4px 14px rgba(10,25,47,.12)}
+  video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
 
-  .teaser{font-size:1.02rem}
-  ul.highlights{margin:16px 0 0;padding-left:0;list-style:none}
-  ul.highlights li{position:relative;padding-left:26px;margin:9px 0}
-  ul.highlights li::before{content:"▸";position:absolute;left:6px;color:var(--teal);font-weight:700}
-  .kpi{display:flex;gap:16px;flex-wrap:wrap;margin-top:22px}
-  .kpi .card{flex:1 1 180px;background:var(--soft);border:1px solid var(--line);border-radius:10px;
-             padding:16px 18px;text-align:center}
-  .kpi .num{font-size:1.7rem;font-weight:800;color:var(--teal);display:block;line-height:1.2}
-  .kpi .lab{font-size:.82rem;color:var(--muted)}
+  /* KPI */
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:32px}
+  .kpi .k{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 16px 20px;text-align:center;box-shadow:var(--sh-sm);
+          transition:transform .2s,box-shadow .2s}
+  .kpi .k:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+  .kpi .num{font-size:2.25rem;font-weight:800;color:var(--teal);display:block;line-height:1.05;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+  .kpi .num.txt{font-size:1.7rem;line-height:1.3;padding:6px 0}
+  .kpi .lab{font-size:.87rem;color:var(--muted);display:block;margin-top:9px;line-height:1.45;text-wrap:balance}
 
-  .fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;align-items:start}
-  figure{margin:0;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:14px}
-  figure img{width:100%;height:auto;border-radius:6px;display:block}
-  figcaption{font-size:.88rem;color:var(--muted);margin-top:12px;line-height:1.6;text-align:left}
+  /* highlight cards */
+  .grid{display:grid;gap:18px}
+  .hl-grid{grid-template-columns:repeat(2,1fr)}
+  .hl{position:relative;background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:26px 26px 24px;overflow:hidden;
+      transition:transform .2s,box-shadow .2s,border-color .2s}
+  .hl::after{content:"";position:absolute;inset:auto -30px -46px auto;width:150px;height:150px;border-radius:50%;
+             background:radial-gradient(circle,rgba(14,124,123,.13),rgba(14,124,123,0) 68%);pointer-events:none}
+  .hl:hover{transform:translateY(-3px);box-shadow:var(--sh-md);border-color:#c5d6e2}
+  .hl .ico{width:46px;height:46px;border-radius:13px;background:var(--teal-soft);color:var(--teal-dark);display:grid;place-items:center;margin-bottom:15px}
+  .hl .ico svg{width:23px;height:23px}
+  .hl h3{margin:0 0 7px;font-size:1.15rem;color:var(--navy);font-weight:800;letter-spacing:-.01em}
+  .hl p{margin:0;font-size:.97rem;color:var(--body);line-height:1.68}
 
-  table.stats{border-collapse:collapse;width:100%;font-size:.92rem;margin-top:6px}
-  table.stats th,table.stats td{border:1px solid var(--line);padding:8px 12px;text-align:center}
-  table.stats th{background:var(--soft);color:var(--navy)}
-  table.stats td:first-child,table.stats tr.total td{font-weight:600}
-  table.stats tr.total td{background:var(--soft)}
+  /* field demonstrations */
+  .demos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:none}
+  .demo{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 18px;box-shadow:var(--sh-sm);
+        transition:transform .2s,box-shadow .2s}
+  .demo:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+  .demo::before{content:"";position:absolute;left:18px;right:18px;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--teal)}
+  .demo .no{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.1em;color:var(--teal-dark);background:var(--teal-soft);
+            padding:2px 9px;border-radius:999px;margin-bottom:11px}
+  .demo h3{margin:0 0 6px;font-size:1.02rem;line-height:1.35;color:var(--navy);font-weight:800}
+  .demo p{margin:0;font-size:.9rem;color:var(--muted);line-height:1.6}
 
-  .dl-note{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 18px;border-radius:8px;
-           background:#fff7e0;border:1px solid #f0d98c;color:#8a6d1a;font-size:.9rem;font-weight:600;
-           text-decoration:none;transition:all .15s ease}
-  .dl-note:hover{background:#fdf1c7;border-color:#e6c860}
-  .dl-note b{font-weight:800}
-  .dl-note .dot{width:9px;height:9px;border-radius:50%;background:#2e9e44;display:inline-block}
+  /* comparison */
+  .deltas{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 8px}
+  .delta{background:linear-gradient(180deg,#eef8f7,#fff 85%);border:1px solid var(--teal-line);border-radius:var(--r);padding:18px 20px 16px}
+  .delta .v{font-size:2.2rem;font-weight:800;color:var(--teal);letter-spacing:-.025em;line-height:1.1;font-variant-numeric:tabular-nums}
+  .delta .u{font-size:.95rem;font-weight:700;color:var(--teal-dark);margin-left:4px}
+  .delta .k{display:block;font-weight:800;color:var(--navy);margin-top:5px}
+  .delta .s{display:block;font-size:.86rem;color:var(--muted);margin-top:1px;font-variant-numeric:tabular-nums}
+  .delta-note{margin:0 0 26px;font-size:.88rem;color:var(--muted)}
+  .tbl-cap{margin:0 2px 10px;font-size:.88rem;color:var(--muted)}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:#fff;box-shadow:var(--sh-sm);
+            -webkit-overflow-scrolling:touch}
+  table.cmp{border-collapse:collapse;width:100%;font-size:.96rem;min-width:640px}
+  .cmp th,.cmp td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .cmp th:first-child,.cmp td:first-child,.cmp th:nth-child(2),.cmp td:nth-child(2){text-align:left}
+  .cmp thead th{background:var(--soft);color:var(--navy);font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;font-weight:800;padding-top:13px;padding-bottom:13px}
+  .cmp tbody tr:last-child td{border-bottom:0}
+  .cmp td:first-child{font-weight:700;color:var(--ink)}
+  .cmp .fam{font-size:.82rem;color:var(--muted);font-weight:500}
+  .cmp tr.ours td:first-child{color:var(--teal-dark)}
+  .cmp tr.best td{background:linear-gradient(90deg,#dff1ef,#f0f9f8);font-weight:800;color:var(--navy)}
+  .f1{display:inline-flex;align-items:center;gap:11px}
+  .f1 .track{display:inline-block;width:118px;height:6px;border-radius:3px;background:var(--track);overflow:hidden}
+  .f1 .track i{display:block;height:100%;border-radius:3px;background:#a9bccd}
+  .cmp tr.ours .track i{background:var(--teal)}
+  .scope{margin:16px 2px 0;font-size:.9rem;color:var(--muted);line-height:1.65;border-left:3px solid var(--teal-line);padding-left:14px;max-width:900px}
+  .scope b{color:var(--navy)}
 
-  pre.bibtex{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:18px 20px;
-             font-size:.82rem;line-height:1.6;overflow-x:auto;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
-  pre.bibtex code{background:none;border:none}
+  /* figures */
+  figure.fig{margin:30px auto 0;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 16px;box-shadow:var(--sh-sm)}
+  .fig-portrait{max-width:780px}
+  .fig-square{max-width:900px}
+  .zoom{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:zoom-in;border-radius:10px;overflow:hidden;
+        font-family:inherit;color:inherit;text-align:left}
+  .zoom picture{display:block}
+  .zoom img{display:block;width:100%;height:auto}
+  .zoom-hint{position:absolute;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+             background:rgba(10,25,47,.76);color:#fff;font-size:.76rem;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+  .zoom-hint svg{width:13px;height:13px}
+  .zoom:hover .zoom-hint,.zoom:focus-visible .zoom-hint{opacity:1}
+  figcaption{font-size:.93rem;color:var(--body);margin:14px 6px 0;line-height:1.68}
+  figcaption b{color:var(--navy)}
 
-  footer{margin-top:56px;padding:26px 0 34px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:center}
-  @media (max-width:640px){header h1{font-size:1.45rem} body{font-size:16px}}
+  /* lightbox */
+  .lightbox{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:20px;border:0;background:transparent}
+  .lightbox::backdrop{background:rgba(10,25,47,.93)}
+  .lightbox[open]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+  .lightbox img{display:block;max-width:min(96vw,1700px);max-height:86vh;width:auto;height:auto;object-fit:contain;background:#fff;border-radius:8px}
+  .lb-cap{color:#cfe0ee;font-size:.86rem;text-align:center;max-width:900px;margin:0;line-height:1.55}
+  .lb-bar{position:absolute;top:14px;right:16px;display:flex;gap:10px}
+  .lb-bar a,.lb-bar button{font-family:inherit;font-size:.85rem;font-weight:700;color:#fff;text-decoration:none;background:rgba(255,255,255,.12);
+           border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:7px 15px;cursor:pointer;transition:background-color .15s}
+  .lb-bar a:hover,.lb-bar button:hover{background:rgba(255,255,255,.24)}
+
+  /* human guidance steps */
+  .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .step{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 20px 18px;box-shadow:var(--sh-sm);overflow:hidden}
+  .step::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+  .step.s1{--c:var(--c-before)} .step.s2{--c:var(--c-during)} .step.s3{--c:var(--c-after)}
+  .step .tag{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--c);
+             padding:3px 10px;border-radius:999px;margin-bottom:11px}
+  .step h3{margin:0 0 6px;font-size:1.08rem;color:var(--navy);font-weight:800}
+  .step p{margin:0;font-size:.94rem;color:var(--body);line-height:1.64}
+  .takeaway{margin:24px auto 0;max-width:900px;font-size:.98rem;color:var(--body);background:var(--soft);border:1px solid var(--line);
+            border-radius:var(--r);padding:18px 22px;line-height:1.7}
+  .takeaway b{color:var(--navy)}
+
+  /* dataset */
+  .ds{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
+  .ds-text p{margin:0 0 18px;color:var(--body)}
+  table.stats{border-collapse:collapse;width:100%;font-size:.93rem;margin:4px 0 18px;font-variant-numeric:tabular-nums}
+  .stats th,.stats td{border:1px solid var(--line);padding:9px 12px;text-align:right}
+  .stats th{background:var(--soft);color:var(--navy);font-weight:800}
+  .stats th:first-child,.stats td:first-child{text-align:left}
+  .stats tbody td:first-child{font-weight:600;color:var(--ink)}
+  .stats tr.total td{font-weight:800;background:var(--teal-soft);color:var(--navy)}
+  .small{font-size:.92rem;color:var(--muted)}
+  .dl-card{position:sticky;top:84px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--sh-md)}
+  .dl-card h3{margin:0 0 6px;font-size:1.2rem;color:var(--navy);font-weight:800;display:flex;align-items:center;gap:10px}
+  .dl-card h3 svg{width:21px;height:21px;color:var(--teal)}
+  .dl-card>p{margin:0 0 16px;font-size:.94rem;color:var(--muted)}
+  .dl-card .btn{width:100%;justify-content:center}
+  .code-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:12px 14px;border:1px dashed #c5d2de;
+            border-radius:12px;background:var(--soft);font-size:.9rem;color:var(--muted)}
+  .code-row code{font-family:var(--mono);font-weight:800;font-size:1.1rem;letter-spacing:.14em;color:var(--navy);
+                 background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px 12px}
+
+  /* citation */
+  .bib{position:relative;background:var(--soft);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
+  .bib pre{margin:0;overflow-x:auto;font-family:var(--mono);font-size:.85rem;line-height:1.7;color:var(--ink)}
+  .copy{position:absolute;top:12px;right:12px;font-family:inherit;font-size:.8rem;font-weight:700;color:var(--teal-dark);background:#fff;
+        border:1px solid var(--teal-line);border-radius:999px;padding:6px 14px;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s}
+  .copy:hover{background:var(--teal-soft);transform:translateY(-1px)}
+
+  footer{margin-top:0;padding:30px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem;text-align:center}
+  footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;text-align:left}
+  footer a{color:inherit;text-decoration:none;font-weight:700}
+  footer a:hover{color:var(--teal)}
+
+  /* Reveal on scroll: pure CSS scroll-driven animation, so visibility depends only on scroll position.
+     Browsers without support simply show everything. */
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @supports (animation-timeline:view()){
+    @media (prefers-reduced-motion:no-preference){
+      .reveal{animation:rise both ease-out;animation-timeline:view();animation-range:entry 0% entry 180px}
+    }
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important}
+    .reveal{animation:none!important}
+  }
+  @media print{
+    .topnav,.hero-wave,.zoom-hint,.copy,.nav-cta,.skip{display:none!important}
+    section{padding-top:28px}
+    .reveal{animation:none!important;opacity:1!important;transform:none!important}
+    .kpi .k,.demo,.hl,.step,.dl-card,.fig,.tbl-wrap,.video-shell{box-shadow:none;break-inside:avoid}
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .kpi,.demos{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:860px){
+    .ds{grid-template-columns:1fr}
+    .dl-card{position:static}
+    .hl-grid{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .deltas{grid-template-columns:1fr}
+    .delta{display:grid;grid-template-columns:auto auto 1fr;align-items:baseline;gap:2px 10px}
+    .delta .k{margin-top:0}
+    .delta .s{grid-column:1 / -1;text-align:left}
+  }
+  @media (max-width:720px){
+    .nav-cta span{display:none}
+    .nav-cta{padding:8px 11px}
+    /* The link row scrolls sideways on phones; fade its right edge until the end is reached. */
+    .nav-links{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+    .nav-links.at-end{-webkit-mask-image:none;mask-image:none}
+    .kicker{font-size:.7rem;letter-spacing:.09em;padding:6px 12px;line-height:1.5}
+    body{font-size:16px}
+    section{padding-top:60px}
+    .hero{padding-top:44px}
+    .hero-wave{margin-top:34px}
+  }
+  @media (max-width:600px){
+    .authors{display:block;font-size:.98rem;line-height:1.85;max-width:none}
+    .author{display:inline;padding:0;border:0;background:none;box-shadow:none}
+    .author:hover{transform:none}
+    .author:not(:last-child)::after{content:", "}
+    .author:last-child::before{content:"and "}
+    .kpi,.demos{grid-template-columns:1fr 1fr;gap:10px}
+    .kpi .num{font-size:1.8rem}
+    .kpi .num.txt{font-size:1.35rem}
+    .kpi .lab,.demo p{font-size:.83rem}
+    .kpi .k,.demo{padding:16px 13px 14px}
+    .f1 .track{width:64px}
+    /* Phones: drop the family column and bars so method + three metrics fit without sideways scrolling. */
+    table.cmp{min-width:0;width:100%;font-size:.9rem}
+    .cmp th,.cmp td{padding:10px 7px}
+    .cmp th:nth-child(2),.cmp td:nth-child(2){display:none}
+    .cmp td:first-child,.cmp th:first-child{padding-left:12px}
+    .cmp thead th{font-size:.68rem;letter-spacing:.03em}
+    .f1 .track{display:none}
+    .code-row{flex-direction:column;align-items:flex-start;gap:8px}
+  }
+  @media (max-width:400px){
+    .kpi,.demos{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<header>
+<nav class="topnav" aria-label="Section navigation">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="M2AC — back to top">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#0e7c7b"/><path d="M10.5 26V14.5l6 8 6-8V26" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 23.5c1.7-2 3.4-2 5.1 0s3.4 2 5.1 0" fill="none" stroke="#a6e5e1" stroke-width="2.2" stroke-linecap="round"/></svg>
+      M2AC
+    </a>
+    <div class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#highlights">Highlights</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#guidance">Guidance</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#citation">Citation</a>
+    </div>
+    <a class="nav-cta" href="#video" aria-label="Watch the video">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg>
+      <span>Video</span>
+    </a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
   <div class="wrap">
-    <h1>Language-Mediated Multimodal Reasoning for Agile Coordination of<br>Uncrewed Surface Vehicle Swarms</h1>
-    <div class="authors">
-      Bin-Bin Hu<sup>†1</sup>,&nbsp; Jialuo Li<sup>†1</sup>,&nbsp; Yifan Hu<sup>†1</sup>,&nbsp; Bin Liu<sup>2</sup>,&nbsp; Zhiquan Li<sup>1</sup>,&nbsp; Weiming Jiang<sup>1</sup>,&nbsp; Ran Shi<sup>1</sup>,&nbsp; Jiayu Zhou<sup>1</sup>,&nbsp; Bowen Yuan<sup>1</sup>,&nbsp; Rui Wang<sup>1</sup>,&nbsp; Yuang Zhou<sup>1</sup>,&nbsp; Dongyi Dai<sup>1</sup>,&nbsp; Wenjun Huang<sup>1</sup>,&nbsp; Yunfei Zhang<sup>3</sup>,&nbsp; Fei Gao<sup>*4</sup>,&nbsp; Hai-Tao Zhang<sup>*1</sup>
+    <p class="kicker">Language-mediated swarm autonomy · field-validated on real lakes</p>
+    <h1>Language-Mediated Multimodal Reasoning for Agile Coordination of Uncrewed Surface Vehicle Swarms</h1>
+    <p class="subtitle"><b>M2AC</b> &nbsp;·&nbsp; Multimodal Language Models for Agile Coordination</p>
+    <div class="authors" aria-label="Authors">
+      <span class="author">Bin-Bin Hu<sup>†1</sup></span>
+      <span class="author">Jialuo Li<sup>†1</sup></span>
+      <span class="author">Yifan Hu<sup>†1</sup></span>
+      <span class="author">Bin Liu<sup>2</sup></span>
+      <span class="author">Zhiquan Li<sup>1</sup></span>
+      <span class="author">Weiming Jiang<sup>1</sup></span>
+      <span class="author">Ran Shi<sup>1</sup></span>
+      <span class="author">Jiayu Zhou<sup>1</sup></span>
+      <span class="author">Bowen Yuan<sup>1</sup></span>
+      <span class="author">Rui Wang<sup>1</sup></span>
+      <span class="author">Yuang Zhou<sup>1</sup></span>
+      <span class="author">Dongyi Dai<sup>1</sup></span>
+      <span class="author">Wenjun Huang<sup>1</sup></span>
+      <span class="author">Yunfei Zhang<sup>3</sup></span>
+      <span class="author">Fei Gao<sup>*4</sup></span>
+      <span class="author">Hai-Tao Zhang<sup>*1</sup></span>
     </div>
     <div class="affil">
       <sup>1</sup>School of Artificial Intelligence and Automation, MOE Engineering Research Center of Autonomous Intelligent Unmanned Systems, Huazhong University of Science and Technology<br>
@@ -92,94 +361,277 @@
     </div>
     <div class="notes"><sup>†</sup> Equal contribution &nbsp;&nbsp; <sup>*</sup> Corresponding author</div>
     <div class="badges">
-      <!-- TODO: replace with real links when available, e.g. arXiv / paper PDF / code -->
-      <a class="badge solid" href="#dataset">Dataset</a>
-      <a class="badge" href="#">Paper <span class="soon">coming soon</span></a>
-      <a class="badge" href="#">arXiv <span class="soon">coming soon</span></a>
+      <a class="btn primary" href="#video">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg>
+        Watch the video
+      </a>
+      <a class="btn" href="https://pan.baidu.com/s/16j_rYS9jQJlKVoRFpHwkqg?pwd=my2c" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+        Dataset
+      </a>
+      <span class="btn off" aria-disabled="true" title="The paper will be linked here once published">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h6"/><path d="M8 13h8M8 17h8M8 9h2"/></svg>
+        Paper <small>coming soon</small>
+      </span>
     </div>
+  </div>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 64" preserveAspectRatio="none">
+      <path d="M0 36 C80 36 160 8 240 8 S400 36 480 36 S640 8 720 8 S880 36 960 36 S1120 8 1200 8 S1360 36 1440 36" fill="none" stroke="#0e7c7b" stroke-opacity=".16" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      <path d="M0 46 C80 46 160 18 240 18 S400 46 480 46 S640 18 720 18 S880 46 960 46 S1120 18 1200 18 S1360 46 1440 46" fill="none" stroke="#0e7c7b" stroke-opacity=".3" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      <path d="M0 58 C120 58 180 40 240 40 S360 58 480 58 S600 40 720 40 S840 58 960 58 S1080 40 1200 40 S1320 58 1440 58" fill="none" stroke="#0e7c7b" stroke-opacity=".5" stroke-width="1.75" vector-effect="non-scaling-stroke"/>
+    </svg>
   </div>
 </header>
 
-<main class="wrap">
+<main id="main">
 
-  <section id="video">
-    <h2><span class="hash">#</span> Video</h2>
-    <div class="video-box">
-      <video controls playsinline muted preload="metadata" poster="assets/video_poster.jpg">
-        <source src="assets/M2AC.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+  <section id="video" aria-labelledby="video-h">
+    <div class="wrap">
+      <h2 id="video-h" class="sr-only">Video</h2>
+      <div class="video-shell reveal">
+        <video controls playsinline preload="metadata" poster="assets/video_poster.jpg">
+          <source src="assets/M2AC.mp4" type="video/mp4">
+          Your browser does not support the video tag. <a href="assets/M2AC.mp4">Download the video</a>.
+        </video>
+      </div>
     </div>
   </section>
 
-  <section id="overview">
-    <h2><span class="hash">#</span> Overview</h2>
-    <p class="teaser">
-      M2AC is a language-mediated approach for coordinating swarms of uncrewed surface vehicles (USVs).
-      It lets a USV fleet follow high-level mission instructions, adapt its formation to open-water scenes,
-      and stay steerable by human operators through plain language. Extensive field trials on real lakes
-      with up to <b>seven heterogeneous USVs</b> demonstrate agile, reliable swarm coordination in the open world.
-    </p>
-    <ul class="highlights">
-      <li>Real-world lake experiments with up to seven heterogeneous USVs</li>
-      <li>Reactive formation switching when encountering unexpected obstacles</li>
-      <li>Zero-shot field demonstration in a previously unseen lake</li>
-      <li>In-mission recovery from perceptual failure through brief human guidance, with the correction reused later</li>
-      <li>Coordinated traversal of narrow passages</li>
-    </ul>
-    <div class="kpi">
-      <div class="card"><span class="num">7</span><span class="lab">heterogeneous USVs in field trials</span></div>
-      <div class="card"><span class="num">78.2%</span><span class="lab">formation-decision success rate (best)</span></div>
-      <div class="card"><span class="num">75.3%</span><span class="lab">F1 score (best)</span></div>
+  <section id="overview" aria-labelledby="overview-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Overview</p>
+        <h2 id="overview-h">A USV swarm that understands the scene and decides how to move</h2>
+        <p class="lead">
+          M2AC is a language-mediated framework that lets a fleet of uncrewed surface vehicles (USVs) make sense of what it
+          encounters and coordinate its formation accordingly. Instead of reacting to sensor readings with predefined rules,
+          the swarm turns what it sees — together with the mission context — into an explicit, task-relevant reading of the
+          situation, and uses it to decide how the fleet should move. Extensive field trials on real lakes with up to
+          <b>seven heterogeneous USVs</b> demonstrate agile, reliable swarm coordination in the open world.
+        </p>
+      </div>
+      <div class="kpi reveal">
+        <div class="k"><span class="num">7</span><span class="lab">heterogeneous USVs in field trials</span></div>
+        <div class="k"><span class="num">78.2%</span><span class="lab">formation-decision success rate (best variant)</span></div>
+        <div class="k"><span class="num">75.3%</span><span class="lab">F1 score (best variant)</span></div>
+        <div class="k"><span class="num txt">Zero-shot</span><span class="lab">transfer to a previously unseen lake, with no task-specific retraining</span></div>
+      </div>
     </div>
   </section>
 
-  <section id="results">
-    <h2><span class="hash">#</span> Results</h2>
-    <div class="fig-grid">
-      <figure>
-        <img src="assets/results_comparison.png" alt="Formation and decision performance of M2AC versus baselines">
-        <figcaption><b>Formation and decision performance.</b> (A) Representative formation transitions of the evaluated methods. (B) Success and failure rates. (C) Precision, recall, and F1 score. (D) Success rates across formation types.</figcaption>
+  <section id="highlights" aria-labelledby="highlights-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Highlights</p>
+        <h2 id="highlights-h">What makes M2AC different</h2>
+      </div>
+      <div class="grid hl-grid reveal">
+        <div class="hl">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+          <h3>Reasoning at the decision layer</h3>
+          <p>The multimodal model reads the scene and decides what the fleet should do; proven feedback control handles the fast, platform-specific motion. Language-mediated intelligence is added without placing a language model in the actuator loop.</p>
+        </div>
+        <div class="hl">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></div>
+          <h3>No action-trajectory data needed</h3>
+          <p>Field data on open water are scarce, costly to collect, and tied to specific hulls. M2AC deploys without large-scale action trajectories or task-specific retraining — one decision layer serves a heterogeneous fleet.</p>
+        </div>
+        <div class="hl">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1 1 21 11.5Z"/><path d="m9 11.5 2 2 4-4"/></svg></div>
+          <h3>Correctable in one sentence</h3>
+          <p>Every decision rests on an explicit scene description. When perception fails, an operator can fix the interpretation with a short natural-language instruction — and the correction is kept and reused the next time a similar scene appears.</p>
+        </div>
+        <div class="hl">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/></svg></div>
+          <h3>Proven on real water</h3>
+          <p>Validated as a complete system in lake trials with up to seven heterogeneous USVs: reactive formation switching, zero-shot transfer to an unseen lake, recovery from a perceptual failure, and coordinated traversal through narrow passages.</p>
+        </div>
+      </div>
+
+      <div class="sub-head reveal" id="trials">
+        <h3>Demonstrated in the field</h3>
+        <p>Four capabilities, each validated in real lake trials.</p>
+      </div>
+      <ol class="demos reveal">
+        <li class="demo">
+          <span class="no">01</span>
+          <h3>Reactive formation switching</h3>
+          <p>Seven heterogeneous USVs start in a circle. When an unexpected obstacle appears, the fleet recognizes its mission relevance and switches to a line formation in time — while the ViT- and GPT-based baselines fail to complete the transition.</p>
+        </li>
+        <li class="demo">
+          <span class="no">02</span>
+          <h3>Zero-shot transfer to an unseen lake</h3>
+          <p>Three USVs sweep open water in a wide search formation. When an unknown target vessel comes into view, they switch to encirclement and progressively contract around it — with no task-specific retraining and no prior exposure to the scene.</p>
+        </li>
+        <li class="demo">
+          <span class="no">03</span>
+          <h3>From human correction to reusable experience</h3>
+          <p>After a perceptual failure ends in a collision, one natural-language instruction from the operator gets the seven-USV fleet through the safe channel — and the correction is reused automatically on the next encounter.</p>
+        </li>
+        <li class="demo">
+          <span class="no">04</span>
+          <h3>Through a narrow gap</h3>
+          <p>Three compact USVs pass in single file through a passage formed by three pillars in a 200 m × 30 m confined waterway, without touching its boundaries.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="comparison" aria-labelledby="comparison-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Quantitative comparison</p>
+        <h2 id="comparison-h">How M2AC compares</h2>
+        <p class="lead">
+          Reactive formation and decision performance is evaluated against four baselines — two vision backbones (ViT, Swin-T)
+          and two GPT-based models (GPT, GPT-FT) — and three M2AC variants (Base, 2.7B, 6.7B). M2AC's performance grows steadily
+          with model scale, and its largest variant attains the highest reported score on every metric.
+        </p>
+      </div>
+
+      <div class="deltas reveal">
+        <div class="delta"><span class="v">+3.3</span><span class="u">pts</span><span class="k">Success rate</span><span class="s">78.2% vs 74.9%</span></div>
+        <div class="delta"><span class="v">+2.8</span><span class="u">pts</span><span class="k">Recall</span><span class="s">74.9% vs 72.2%</span></div>
+        <div class="delta"><span class="v">+3.7</span><span class="u">pts</span><span class="k">F1 score</span><span class="s">75.3% vs 71.6%</span></div>
+      </div>
+      <p class="delta-note reveal">M2AC-6.7B versus the strongest baseline (GPT-FT), in percentage points.</p>
+
+      <p class="tbl-cap reveal">Reactive formation and decision performance. All values in %; higher is better.</p>
+      <div class="tbl-wrap reveal">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Method</th>
+              <th scope="col">Family</th>
+              <th scope="col">Success rate</th>
+              <th scope="col">Recall</th>
+              <th scope="col">F1 score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>ViT</td><td><span class="fam">Vision backbone</span></td><td>45.37</td><td>42.48</td><td><span class="f1"><span>39.30</span><span class="track" aria-hidden="true"><i style="width:39.3%"></i></span></span></td></tr>
+            <tr><td>Swin-T</td><td><span class="fam">Vision backbone</span></td><td>65.49</td><td>51.86</td><td><span class="f1"><span>47.64</span><span class="track" aria-hidden="true"><i style="width:47.6%"></i></span></span></td></tr>
+            <tr><td>GPT</td><td><span class="fam">GPT-based baseline</span></td><td>68.67</td><td>65.29</td><td><span class="f1"><span>65.33</span><span class="track" aria-hidden="true"><i style="width:65.3%"></i></span></span></td></tr>
+            <tr><td>GPT-FT</td><td><span class="fam">GPT-based baseline</span></td><td>74.92</td><td>72.17</td><td><span class="f1"><span>71.58</span><span class="track" aria-hidden="true"><i style="width:71.6%"></i></span></span></td></tr>
+            <tr class="ours"><td>M2AC-Base</td><td><span class="fam">Ours</span></td><td>54.29</td><td>44.34</td><td><span class="f1"><span>45.32</span><span class="track" aria-hidden="true"><i style="width:45.3%"></i></span></span></td></tr>
+            <tr class="ours"><td>M2AC-2.7B</td><td><span class="fam">Ours</span></td><td>70.31</td><td>64.27</td><td><span class="f1"><span>65.25</span><span class="track" aria-hidden="true"><i style="width:65.3%"></i></span></span></td></tr>
+            <tr class="ours best"><td>M2AC-6.7B</td><td><span class="fam">Ours</span></td><td>78.22</td><td>74.94</td><td><span class="f1"><span>75.32</span><span class="track" aria-hidden="true"><i style="width:75.3%"></i></span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="fig fig-portrait reveal">
+        <button class="zoom" type="button" aria-label="Enlarge figure: reactive formation and decision performance">
+          <picture>
+            <source type="image/webp" srcset="assets/results_comparison.webp">
+            <img src="assets/results_comparison.jpg" width="1400" height="1851" loading="lazy" decoding="async"
+                 alt="Four-panel figure comparing ViT, Swin-T, GPT, GPT-FT and three M2AC variants on reactive formation and decision performance. Panel A: field trials where M2AC completes the formation transition while ViT and GPT fail. Panel B: success and failure rates. Panel C: precision, F1 score and recall. Panel D: success rates per formation.">
+          </picture>
+          <span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>Enlarge</span>
+        </button>
+        <figcaption><b>Reactive formation and decision performance.</b> (A) Reactive formation with the evaluated methods: M2AC completes the formation transition, whereas the ViT- and GPT-based baselines fail. (B) Reported success and failure rates. (C) Reported precision, F1 score, and recall. (D) Formation-specific success rates with the corresponding precision, recall, and F1 curves.</figcaption>
       </figure>
-      <figure>
-        <img src="assets/human_guidance.jpg" alt="Field performance of M2AC before, during, and after human guidance">
-        <figcaption><b>Field performance before, during, and after human guidance.</b> (A) Snapshots at the three stages. (B) Corresponding trajectories: collision without guidance, collision-free passage after guidance, and larger obstacle clearance once the correction is reused.</figcaption>
-      </figure>
+
+      <p class="scope reveal"><b>Evaluation scope.</b> Scores are point estimates under the reported evaluation protocol. The baselines are perception and language models; a matched end-to-end vision–language–action policy trained on marine action data was not available and is left to future work.</p>
     </div>
   </section>
 
-  <section id="dataset">
-    <h2><span class="hash">#</span> Dataset</h2>
-    <p>
-      We release a self-built water-surface scene dataset of around <b>18k images</b> spanning four scene
-      categories. Training images were collected at Songshan Lake, while test images come from diverse
-      open-source water-surface scenes (rivers, streams, harbors) to probe generalization beyond the training lake.
-    </p>
-    <table class="stats">
-      <thead>
-        <tr><th>Scene category</th><th>Train</th><th>Test</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Open waters</td><td>5,052</td><td>430</td></tr>
-        <tr><td>Open target</td><td>3,552</td><td>344</td></tr>
-        <tr><td>Constrained passage</td><td>4,706</td><td>405</td></tr>
-        <tr><td>Constrained target</td><td>3,499</td><td>377</td></tr>
-        <tr class="total"><td>Total</td><td>16,809</td><td>1,556</td></tr>
-      </tbody>
-    </table>
-    <p style="margin-top:16px">
-      Field-trial logs (multi-USV rosbags) from the lake experiments — formation switching, unseen-lake transfer,
-      guidance and reuse, and narrow-passage traversal — are included in the download alongside the image dataset.
-    </p>
-    <a class="dl-note" href="https://pan.baidu.com/s/16j_rYS9jQJlKVoRFpHwkqg?pwd=my2c" target="_blank" rel="noopener">
-      <span class="dot"></span>Download from Baidu Netdisk&nbsp;(百度网盘)&nbsp;·&nbsp;access code / 提取码:&nbsp;<b>my2c</b>
-    </a>
+  <section id="guidance" aria-labelledby="guidance-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Human in the loop</p>
+        <h2 id="guidance-h">Turning human correction into reusable experience</h2>
+        <p class="lead">
+          A formation-contraction trial on Songshan Lake with seven USVs, run three times: fully autonomous, with a single
+          operator instruction, and autonomously again afterwards.
+        </p>
+      </div>
+
+      <ol class="steps reveal">
+        <li class="step s1">
+          <span class="tag">Before guidance</span>
+          <h3>Autonomous baseline</h3>
+          <p>Low-salience floating obstacles are misread as open water. The fleet keeps a widely spaced line formation, its paths overlap the obstacle region, and a collision occurs.</p>
+        </li>
+        <li class="step s2">
+          <span class="tag">During guidance</span>
+          <h3>Intervention trial</h3>
+          <p>The operator gives one concise natural-language instruction. The fleet reconfigures into a compact line formation and passes through the narrow safe channel without collision.</p>
+        </li>
+        <li class="step s3">
+          <span class="tag">After guidance</span>
+          <h3>Reuse trial</h3>
+          <p>On a later encounter with a similar scene, the fleet contracts its formation automatically and earlier, keeping more distance from the obstacle — with no further human input and no retraining.</p>
+        </li>
+      </ol>
+
+      <figure class="fig fig-square reveal">
+        <button class="zoom" type="button" aria-label="Enlarge figure: performance before, during, and after human guidance">
+          <picture>
+            <source type="image/webp" srcset="assets/human_guidance.webp">
+            <img src="assets/human_guidance.jpg" width="1400" height="1380" loading="lazy" decoding="async"
+                 alt="Six-panel figure on human guidance. Left column: aerial snapshots of seven USVs before, during, and after human guidance. Right column: the corresponding trajectories, showing a collision in the docking area before guidance, an earlier contraction and collision-free passage during guidance, and an even earlier contraction after guidance.">
+          </picture>
+          <span class="zoom-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>Enlarge</span>
+        </button>
+        <figcaption><b>Performance before, during, and after human guidance.</b> (A) Snapshots of the autonomous baseline, the intervention trial, and the later trial that reuses the correction. (B) Corresponding trajectories: collision in the obstacle region under the autonomous baseline, collision-free passage after the intervention, and increased obstacle clearance once the correction is reused.</figcaption>
+      </figure>
+
+      <p class="takeaway reveal"><b>Guidance is supervision, not a safety guarantee.</b> Here the operator stepped in only after the failure had been recognized. What the interface adds is that each correction becomes an inspectable, reusable piece of experience — with no parameter updates.</p>
+    </div>
   </section>
 
-  <section id="citation">
-    <h2><span class="hash">#</span> Citation</h2>
-    <p>If you find our work useful, please cite:</p>
-    <pre class="bibtex"><code>@article{m2ac2026,
+  <section id="dataset" aria-labelledby="dataset-h">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Dataset</p>
+        <h2 id="dataset-h">Water-surface scene dataset</h2>
+      </div>
+      <div class="ds reveal">
+        <div class="ds-text">
+          <p>We release a self-built water-surface scene dataset of around <b>18k images</b> spanning four scene categories.
+             Training images were collected at Songshan Lake, while test images come from diverse open-source water-surface
+             scenes (rivers, streams, harbors) to probe generalization beyond the training lake.</p>
+          <table class="stats">
+            <thead>
+              <tr><th scope="col">Scene category</th><th scope="col">Train</th><th scope="col">Test</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Open waters</td><td>5,052</td><td>430</td></tr>
+              <tr><td>Open target</td><td>3,552</td><td>344</td></tr>
+              <tr><td>Constrained passage</td><td>4,706</td><td>405</td></tr>
+              <tr><td>Constrained target</td><td>3,499</td><td>377</td></tr>
+              <tr class="total"><td>Total</td><td>16,809</td><td>1,556</td></tr>
+            </tbody>
+          </table>
+          <p class="small">Field-trial logs (multi-USV rosbags) from the lake experiments — formation switching, unseen-lake transfer,
+             guidance and reuse, and narrow-passage traversal — will accompany the image dataset.</p>
+        </div>
+        <aside class="dl-card" aria-label="Dataset download">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></svg>
+            Download
+          </h3>
+          <p>Hosted on Baidu Netdisk (百度网盘). The link carries the access code; it can also be entered by hand.</p>
+          <a class="btn primary" href="https://pan.baidu.com/s/16j_rYS9jQJlKVoRFpHwkqg?pwd=my2c" target="_blank" rel="noopener">
+            Open in Baidu Netdisk
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+          </a>
+          <div class="code-row"><span>Access code · 提取码</span><code>my2c</code></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="citation" aria-labelledby="citation-h">
+    <div class="wrap narrow">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Citation</p>
+        <h2 id="citation-h">If you find our work useful</h2>
+      </div>
+      <div class="bib reveal">
+        <pre id="bibtex"><code>@article{m2ac2026,
   title   = {Language-Mediated Multimodal Reasoning for Agile Coordination
              of Uncrewed Surface Vehicle Swarms},
   author  = {Hu, Bin-Bin and Li, Jialuo and Hu, Yifan and Liu, Bin and
@@ -189,13 +641,114 @@
   year    = {2026},
   note    = {Preprint}
 }</code></pre>
+        <button class="copy" id="copy-bib" type="button">Copy BibTeX</button>
+      </div>
+    </div>
   </section>
 
 </main>
 
 <footer>
-  <div class="wrap">© 2026 M2AC Team · School of Artificial Intelligence and Automation, HUST</div>
+  <div class="wrap">
+    <span>© 2026 M2AC Team · School of Artificial Intelligence and Automation, Huazhong University of Science and Technology</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
 </footer>
 
+<dialog class="lightbox" id="lightbox" aria-label="Enlarged figure">
+  <div class="lb-bar">
+    <a id="lb-open" href="#" target="_blank" rel="noopener">Open full size ↗</a>
+    <button type="button" class="lb-close" aria-label="Close">Close ✕</button>
+  </div>
+  <img id="lb-img" alt="">
+  <p class="lb-cap" id="lb-cap"></p>
+</dialog>
+
+<script>
+(function () {
+  var d = document;
+
+  /* Highlight the section currently in view in the top navigation (exactly one, recomputed from geometry). */
+  var navLinks = Array.prototype.slice.call(d.querySelectorAll('.nav-links a'));
+  var sectionIds = navLinks.map(function (a) { return a.getAttribute('href').slice(1); });
+  function updateNav() {
+    var line = window.innerHeight * 0.4, current = null;
+    sectionIds.forEach(function (id) {
+      var s = d.getElementById(id);
+      if (!s) return;
+      var r = s.getBoundingClientRect();
+      if (r.top <= line && r.bottom > line) current = id;
+    });
+    navLinks.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  window.addEventListener('resize', updateNav);
+  if ('IntersectionObserver' in window) {
+    // Catches layout shifts that move sections without a scroll event (e.g. late image loading).
+    var navIO = new IntersectionObserver(updateNav, { rootMargin: '-35% 0px -55% 0px' });
+    sectionIds.forEach(function (id) { var s = d.getElementById(id); if (s) navIO.observe(s); });
+  }
+  updateNav();
+
+  /* On phones the navigation row scrolls sideways: drop the edge fade once it is scrolled to the end. */
+  var navRow = d.querySelector('.nav-links');
+  if (navRow) {
+    var syncNavRow = function () {
+      navRow.classList.toggle('at-end', navRow.scrollLeft + navRow.clientWidth >= navRow.scrollWidth - 2);
+    };
+    navRow.addEventListener('scroll', syncNavRow, { passive: true });
+    window.addEventListener('resize', syncNavRow);
+    syncNavRow();
+  }
+
+  /* Click-to-enlarge figures. */
+  var box = d.getElementById('lightbox');
+  var boxImg = d.getElementById('lb-img');
+  var boxCap = d.getElementById('lb-cap');
+  var boxOpen = d.getElementById('lb-open');
+
+  d.querySelectorAll('.zoom').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var img = btn.querySelector('img');
+      var cap = btn.closest('figure').querySelector('figcaption');
+      var src = img.currentSrc || img.src;
+      boxImg.src = src;
+      boxImg.alt = img.alt;
+      boxOpen.href = src;
+      boxCap.textContent = cap ? cap.textContent.replace(/\s+/g, ' ').trim() : '';
+      if (typeof box.showModal === 'function') {
+        if (!box.open) box.showModal();
+      } else {
+        window.open(src, '_blank');
+      }
+    });
+  });
+  box.addEventListener('click', function (ev) {
+    if (ev.target === box || ev.target.closest('.lb-close')) box.close();
+  });
+
+  /* Copy BibTeX. */
+  var copyBtn = d.getElementById('copy-bib');
+  copyBtn.addEventListener('click', function () {
+    var text = d.getElementById('bibtex').textContent;
+    var reset = function () { setTimeout(function () { copyBtn.textContent = 'Copy BibTeX'; }, 1800); };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        copyBtn.textContent = 'Copied ✓';
+      }, function () {
+        copyBtn.textContent = 'Copy failed';
+      }).then(reset);
+    } else {
+      var range = d.createRange();
+      range.selectNodeContents(d.getElementById('bibtex'));
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      copyBtn.textContent = 'Press Ctrl+C';
+      reset();
+    }
+  });
+})();
+</script>
 </body>
 </html>
